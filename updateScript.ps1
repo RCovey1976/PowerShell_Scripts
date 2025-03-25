@@ -13,13 +13,10 @@
 .EXAMPLE
 	PS C:\> .\updates.ps1
 .NOTES
-	LAST UPDATED: v0.1 - 03/07/2025
-		# Started creation of script
-		# Defined needed variables (logFile, timeStamp, etc.)
-		# Setup script framework
-		# First draft of script completed
-		# Testing completed
-		# Minor changes to variables and framework
+	LAST UPDATED: v0.4 - 03/25/2025
+		+ Added Format-Output function (formatting to break up output of script; better readability)
+		+ Added check for log directory and log file
+		+ Moved privilege check to beginning of script.
 #>
 
 # Check if the script is running with elevated privileges
