@@ -1,15 +1,14 @@
 <#
 .SYNOPSIS
-	Final update script; written after many iterations.
-	
+	Final update script; written after many iterations.	
 .DESCRIPTION
 	PowerShell script that starts by checking that the script is running
 	with elevated permissions, and exit if not. It will then check (and install)
 	the Get-WindowsUpdate PowerShell module (if not installed already.)
-	The script will then proceed to check for updates to Windows with said
+	The script will then proceed to check for updates with said
 	Get-WindowsUpdate and the WinGet CLI tool, download and install those
 	updates, and save all output to a log file at a destination designated
-	by the user
+	by the user.
 .EXAMPLE
 	PS C:\> .\updates.ps1
 .NOTES
