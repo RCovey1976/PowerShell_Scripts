@@ -86,7 +86,7 @@ try {
 # Perform WinGet update / upgrade using Winget.
 Write-Log "Starting updates via WinGet..."
 try {
-    Write-Log winget upgrade --all --include-unknown --silent
+    Write-Log winget update --all --include-unknown --silent
     Write-Log "WinGet updates completed successfully."
     Format-Output
 } catch {
