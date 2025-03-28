@@ -75,7 +75,7 @@ Write-Log "PSWindowsUpdate module imported."
 # Will catch and log any errors that may occur.
 try {
     Write-Log "Starting Windows updates using Get-WindowsUpdate..."
-    Write-Log Get-WindowsUpdate -Install -AcceptAll -ErrorHandling Stop
+    Write-Log Get-WindowsUpdate -Install -AcceptAll
     Write-Log "Windows updates completed successfully using Get-WindowsUpdate."
     Format-Output
 } catch {
