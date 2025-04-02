@@ -5,11 +5,11 @@ Please note that these scripts can be very "crude", as I am stil honing my Power
 As such, these scripts are evolving projects, and will continue to receive updates to the code as I learn and grow.
 Please feel free to leave any questions, comments, requests or suggestions!
 
-<b><u>(powershell_updates.ps1) TASKS 🚧</u></b> (<i>a/o 03/18/2025</i>):
-
-  + Refine functions to reduce redundancy (where possible) 
-  + Add CLI menu for easy use
-  + Add Chocolatey update functions
-  + Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.
-  + Add proper error handling
+<b><u>[WIP]</u></b>:<br>
+  <u><b>updateScript.ps1</b></u><br>
+  🚧  Refine functions to reduce redundancy (where possible)<br>
+  ✅  Add CLI menu for easy use<br>      
+  🚧  Add Chocolatey update functions<br>
+  🚧  Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.<br>
+  🚧  Add proper error handling<br>
       - Side-note: Possible feature to output suggested fix for common issues.
