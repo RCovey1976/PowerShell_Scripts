@@ -5,8 +5,9 @@ Please note that these scripts can be very "crude", as I am stil honing my Power
 As such, these scripts are evolving projects, and will continue to receive updates to the code as I learn and grow.
 Please feel free to leave any questions, comments, requests or suggestions!
 
-(powershell_updates.ps1) TASKS (a/o 03/18/2025):
-  + Refine functions to reduce redundancy (where possible)
+<b><u>(powershell_updates.ps1) TASKS 🚧</u></b> (<i>a/o 03/18/2025</i>):
+
+  + Refine functions to reduce redundancy (where possible) 
   + Add CLI menu for easy use
   + Add Chocolatey update functions
   + Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.
