@@ -6,6 +6,7 @@ As such, these scripts are evolving projects, and will continue to receive updat
 Please feel free to leave any questions, comments, requests or suggestions!
 
 <b><u>[WIP]</u></b>:<br>
+
   <u><b>updateScript.ps1</b></u><br>
   🚧  Refine functions to reduce redundancy (where possible)<br>
   ✅  Add CLI menu for easy use
