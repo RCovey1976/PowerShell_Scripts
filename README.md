@@ -13,4 +13,4 @@ Please feel free to leave any questions, comments, requests or suggestions!
   🚧  Add Chocolatey update functions<br>
   🚧  Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.<br>
   🚧  Add proper error handling<br>
-      - Side-note: Possible feature to output suggested fix for common issues.
+  <td><i>Side-note: Possible feature to output suggested fix for common issues.</i></td>
