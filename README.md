@@ -8,7 +8,7 @@ Please feel free to leave any questions, comments, requests or suggestions!
 <b><u>[WIP]</u></b>:<br>
   <u><b>updateScript.ps1</b></u><br>
   🚧  Refine functions to reduce redundancy (where possible)<br>
-  ✅  Add CLI menu for easy use<br>      
+  ✅  Add CLI menu for easy use
   🚧  Add Chocolatey update functions<br>
   🚧  Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.<br>
   🚧  Add proper error handling<br>
