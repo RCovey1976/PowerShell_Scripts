@@ -1,7 +1,6 @@
 <#
 .SYNOPSIS
 	Windows update/upgrade script, using both PSWindowsUpdate module and WinGet cli package tool.
-	
 .DESCRIPTION
 	PowerShell script that starts by checking that the script is running
 	with elevated permissions, and exit if not. It will then check (and install)
@@ -13,17 +12,15 @@
 .EXAMPLE
 	PS C:\> .\updates.ps1
 .NOTES
-	LAST UPDATED: v0.7 - 03/31/2025
-		# Full review of script, as running script did not complete actions as planned.
-		# Added verbose output to script for testing.
-		# Reviewed functions and consolidated, where possible.
-		# Added menu option for user friendliness
-  		# Confirmed working with testing on multiple hosts.
+	LAST UPDATED: v0.7 - 04/05/2025
+	# Full review of script, as running script did not complete actions as planned.
+	# Reviewed functions and consolidated, where possible.
+        # Updated both Get-WindowsUpdate and winget commands
+        # Tested on Windows 11 - confirmed working
 #>
 
-# Adding for verbose output of script (testing)
-$PSDefaultParameterValues['*:Verbose'] = $true
-
+# Adding for verbose output of script (testing); commented out as testing completed.
+# $PSDefaultParameterValues['*:Verbose'] = $true
 # Check if the script is running with elevated privileges
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Log "Please run this script as an administrator." -ForegroundColor Red
@@ -58,11 +55,11 @@ function Format-Output {
     Write-Log $("=" * 50)
 }
 
-# New function winUpdate
-# Check if the Get-WindowsUpdate module is installed, if not, install and import it.
-# Code will then proceed to run updates using PSWindowsUpdate.
-function winUpdate {
-	if (-not (Get-Module -ListAvailable -Name 'PSWindowsUpdate')) {
+# New function GetDependencies.
+# Checks for PSWindowsUpdate module, and imports said module before continuing to update system.
+function Get-Dependencies {
+    # If PSWindowsUpdate isn't installed, pull and install from Microsoft repositories.
+    if (-not (Get-Module -ListAvailable -Name 'PSWindowsUpdate')) {
 		Write-Log "PSWindowsUpdate module not found. Installing it now."
 		try {
 			Install-Module -Name PSWindowsUpdate -Force -Scope AllUsers -Confirm:$false
@@ -74,19 +71,26 @@ function winUpdate {
 			exit 0
         }
 	}
-	
+
+    # Imports said module, and continues script
 	Import-Module PSWindowsUpdate
 	Write-Log "PSWindowsUpdate module imported."
-	
+    Format-Output
+    Win-Update
+}
+
+# New function Win-Update
+# Run Get-WindowsUpdate module to download and install all updates silently.
+function Win-Update {
 	# Perform Windows Update using Get-WindowsUpdate
 	# Will catch and log any errors that may occur.
+    Write-Log "Starting Windows updates using Get-WindowsUpdate..."
 	try {
-		Write-Log "Starting Windows updates using Get-WindowsUpdate..."
-		Write-Log Get-WindowsUpdate -Install -AcceptAll -IgnoreReboot -Verbose
+		Get-WindowsUpdate -Install -AcceptAll -IgnoreReboot -Verbose | Write-Log
 		Write-Log "Windows updates completed successfully using Get-WindowsUpdate."
 		Write-Log "Update process completed."
 		Format-Output
-		wingetUpdate
+		WinGet-Update
 	} catch {
 		Write-Log "Error during Windows update using Get-WindowsUpdate: $_"
 		Format-Output
@@ -96,10 +100,10 @@ function winUpdate {
 
 # New function wingetUpdate
 # Perform WinGet update / upgrade using Winget.
-function wingetUpdate {
+function WinGet-Update {
 	Write-Log "Starting updates via WinGet..."
 	try {
-		Write-Log winget upgrade --all --include-unknown --silent
+		winget upgrade --all --include-unknown --silent | Write-Log
 		Write-Log "WinGet updates completed successfully."
 		Format-Output
         Show-Menu
@@ -114,7 +118,6 @@ function wingetUpdate {
 # Provides script with a menu for user friendliness
 function Show-Menu {
     param([string]$Title = "Menu")
-    Clear-Host
     Write-Host ""
     Write-Host "================ $Title ================"
     Write-Host "1. Run Script"
@@ -134,7 +137,7 @@ do {
     switch ($choice) {
         "1" {
             Write-Host "Running script, please wait..."
-            winUpdate
+            Get-Dependencies
             break
         }
         "2" {
@@ -167,3 +170,6 @@ do {
     }
     pause
 } until ($choice -eq "Q")
+
+# Start script
+Show-Menu
