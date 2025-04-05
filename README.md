@@ -9,6 +9,7 @@ Please feel free to leave any questions, comments, requests or suggestions!
 
   <u><b>UpdateScript.ps1</b></u><br>
   🚧  Refine functions to reduce redundancy (where possible)<br>
+  🚧  Add option to automatically sort log files in log directory<br>
   ✅  Add CLI menu for easy use<br>
   🚧  Add Chocolatey update functions<br>
   🚧  Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.<br>
