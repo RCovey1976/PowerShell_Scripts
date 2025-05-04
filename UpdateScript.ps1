@@ -12,7 +12,7 @@
 .EXAMPLE
     PS C:\> .\UpdateScript.ps1
 .NOTES
-    LAST UPDATED: v0.1 - 05/04/2025
+    LAST UPDATED: v0.8 - 05/04/2025
         + Updated $logFile variable to dynamic user profile
         + Updated $BaseUpdate and $WingetUpdate to Out-String | Write-Log to cleanup output in log file.
 #>
