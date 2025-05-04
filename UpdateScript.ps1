@@ -30,7 +30,7 @@ function Write-Log {
     call back to it at a later time.#>
     $timeStamp = (Get-Date).ToString("HH:mm:ss")
     $logTime= (Get-Date).ToString("MM-dd-yyyy")
-    $script:logFile = "\path\to\logfile\$logTime.log"
+    $script:logFile = "$env:USERPROFILE\$logTime.log"
 
     # Define how logging should be formatted, and command to push to log file.
     $logMessage = "$timeStamp - $message"
@@ -86,7 +86,7 @@ function Update-Function {
     Write-Host "Starting updates..."
 
     try {
-        Write-Log $BaseUpdate
+        $BaseUpdate | Out-String | Write-Log
         Write-Log "Windows updates completed successfully using Get-WindowsUpdate."
         Format-Output
         Show-Menu
@@ -97,7 +97,7 @@ function Update-Function {
     }
 
     try {
-        Write-Log $WinGetUpdate
+        $WinGetUpdate | Out-String | Write-Log
         Write-Log "WinGet updates completed successfully."
         Format-Output
         Show-Menu
