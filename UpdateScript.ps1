@@ -12,13 +12,9 @@
 .EXAMPLE
     PS C:\> .\UpdateScript.ps1
 .NOTES
-    LAST UPDATED: v0.1 - 04/05/2025
-        + Created UpdateScript.ps1 file
-        + Imported functions/code that is confirmed working from old update scripts.
-        + Reviewed each line of code for errors
-        + Updated $logfile within Write-Log function to $script:logfile so Show-Menu function can call back.
-        + Added Get-Dependeny function to check for PSWindowsUpdate module install on host.
-        + Updated comments
+    LAST UPDATED: v0.1 - 05/04/2025
+        + Updated $logFile variable to dynamic user profile
+        + Updated $BaseUpdate and $WingetUpdate to Out-String | Write-Log to cleanup output in log file.
 #>
 
 # Function "Write-Log" to write all output to $script:logFile
