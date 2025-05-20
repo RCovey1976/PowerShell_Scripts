@@ -73,8 +73,8 @@ function Get-Dependency {
 
 function Update-Function {
     # Define the update variables for each command needed.
-    $BaseUpdate = Get-WindowsUpdate -Install -AcceptAll -IgnoreReboot | Select-Object -Property Name,Status,InstallerErrorCode
-    $WinGetUpdate = winget upgrade --all --include-unknown --silent | Select-Object -Property Name,Status,InstallerErrorCode
+    $BaseUpdate = Get-WindowsUpdate -Install -AcceptAll -IgnoreReboot
+    $WinGetUpdate = winget upgrade --all --include-unknown --silent
 
     <# Add formatting to break up output of script, and attempt the updates with try statement,
     and write to log file any errors that occur using catch. #>
