@@ -104,7 +104,7 @@ do {
     switch ($choice) {
         "1" {
             Write-Host "Running script, please wait..."
-            Update-Func
+            Get-Setup
             break
         }
         "2" {
