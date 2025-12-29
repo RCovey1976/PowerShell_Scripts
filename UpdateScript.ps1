@@ -61,8 +61,6 @@ function Get-Setup {
         Install-Module PSWindowsUpdate -Force -Confirm:$false
     }
     Import-Module PSWindowsUpdate
-
-
 }
 
 # New function Update-Func.
@@ -87,16 +85,16 @@ function Update-Func {
 # Provides script with a menu for user friendliness
 function Show-Menu {
     param([string]$Title)
-    Write-Host ""
-    Write-Host "================ $Title ================"
-    Write-Host "1. Run Script"
-    Write-Host "2. Print Log File"
-    Write-Host "3. Print Script"
-    Write-Host "4. Restart Host"
-    Write-Host "5. Shutdown Host"
-    Write-Host "Q. Quit"
-    Write-Host "==============================================="
-    Write-Host ""
+    Write-Host "
+    ================ $Title ================
+    1. Run Script
+    2. Print Log File
+    3. Print Script
+    4. Restart Host
+    5. Shutdown Host
+    Q. Quit
+    ===============================================
+    "
 }
 
 do {
