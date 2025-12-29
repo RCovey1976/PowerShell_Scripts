@@ -15,7 +15,7 @@
 	LAST UPDATED: v0.4 - 12/29/2025
         + Moved Write-Log function to beginning of script
         + Added Format-Output and Get-Setup functions
-        + 
+        + Cleaned up Show-Menu function
 #>
 
 # Adding for verbose output of script (testing); commented out as testing completed.
