@@ -1,43 +1,38 @@
 <#
 .SYNOPSIS
-    Update script that uses both PSWindowsUpdate and WinGet updates, and output results to log file.
+	Windows update/upgrade script
 .DESCRIPTION
-    PowerShell script that starts by checking that the script is running
-    with elevated permissions, and exit if not. It will then check (and install)
-    the Get-WindowsUpdate PowerShell module (if not installed already.)
-    The script will then proceed to check for updates with said
-    Get-WindowsUpdate and the WinGet CLI tool, download and install those
-    updates, and save all output to a log file at a destination designated
-    by the user
+	PowerShell script that starts by checking that the script is running
+	with elevated permissions, and exit if not. It will then check (and install)
+	the Get-WindowsUpdate PowerShell module (if not installed already.)
+	The script will then proceed to check for updates with said
+	Get-WindowsUpdate and the WinGet CLI tool, download and install those
+	updates, and save all output to a log file at a destination designated
+	by the user
 .EXAMPLE
-    PS C:\> .\UpdateScript.ps1
+	PS C:\> .\UpdateScript.ps1
 .NOTES
-    LAST UPDATED: v0.8 - 05/04/2025
-        + Updated $logFile variable to dynamic user profile
-        + Updated $BaseUpdate and $WingetUpdate to Out-String | Write-Log to cleanup output in log file.
+	LAST UPDATED: v0.4 - 12/29/2025
+        + Moved Write-Log function to beginning of script
+        + Added Format-Output and Get-Setup functions
+        + 
 #>
 
-# Function "Write-Log" to write all output to $script:logFile
+# Adding for verbose output of script (testing); commented out as testing completed.
+# $PSDefaultParameterValues['*:Verbose'] = $true
+
+# Function "Write-Log" to write all output to $logFile
 function Write-Log {
     param(
         [string]$message
     )
-    <# Define timeStamp, logTime and logFile variables. Set log file variable to $script so that Show-Menu can
-    call back to it at a later time.#>
-    $timeStamp = (Get-Date).ToString("HH:mm:ss")
-    $logTime= (Get-Date).ToString("MM-dd-yyyy")
-    $script:logFile = "$env:USERPROFILE\$logTime.log"
+    # Define timeStamp, logTime and logFile variables.
+    $script:timeStamp = (Get-Date).ToString("HH:mm:ss")
+    $script:logTime= (Get-Date).ToString("MM-dd-yyyy")
+    $script:logFile = "C:\path\to\logfiles\$logTime.log"
 
-    # Define how logging should be formatted, and command to push to log file.
     $logMessage = "$timeStamp - $message"
     $logMessage | Out-File -Append -FilePath $logFile
-}
-
-# Function for formatting the output of the script.
-function Format-Output {
-    # Adds a carriage break (blank line) and divider to break up output, for easier reviewing.
-    Write-Log "`r"
-    Write-Log $("=" * 50)
 }
 
 # Check if the script is running with elevated privileges
@@ -46,90 +41,72 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit
 }
 
-<#New function GetDependencies. Checks for PSWindowsUpdate module, and imports said module before
-continuing to update system.#>
-function Get-Dependency {
-    # If PSWindowsUpdate isn't installed, pull and install from Microsoft repositories.
-    if (-not (Get-Module -ListAvailable -Name 'PSWindowsUpdate')) {
-        Write-Log "PSWindowsUpdate module not found. Installing it now."
-        try {
-            Install-Module -Name PSWindowsUpdate -Force -Scope AllUsers -Confirm:$false
-            Write-Log "PSWindowsUpdate module installed successfully."
-            Format-Output
-            Update-Function
-        } catch {
-            Write-Log "Error installing PSWindowsUpdate module: $_"
-            Format-Output
-            exit 0
-        }
-    }
-
-    # Imports said module, and continues script
-    Import-Module PSWindowsUpdate
-    Write-Log "PSWindowsUpdate module imported."
-    Format-Output
-    Update-Function
+# Format-Output function; adds carriage return and break to log file, for better readability.
+function Format-Output {
+    "`r" | Out-File -FilePath $logFile -Append
+    Write-Output $("=" * 50) | Out-File -FilePath $logFile -Append
 }
 
-function Update-Function {
-    # Define the update variables for each command needed.
-    $BaseUpdate = Get-WindowsUpdate -Install -AcceptAll -IgnoreReboot
-    $WinGetUpdate = winget upgrade --all --include-unknown --silent
-
-    <# Add formatting to break up output of script, and attempt the updates with try statement,
-    and write to log file any errors that occur using catch. #>
-    Format-Output
-    Write-Host "Starting updates..."
-
-    try {
-        $BaseUpdate | Out-String | Write-Log
-        Write-Log "Windows updates completed successfully using Get-WindowsUpdate."
-        Format-Output
-        Show-Menu
-    } catch {
-        Write-Log "Error during Windows update using Get-WindowsUpdate: $_"
-        Format-Output
-        exit 0
+<# Get-Setup function; checks for prerequisites and completes any necessary tasks
+to fulfill said prerequisites #>
+function Get-Setup {
+    # Check for 
+    if (-not (Test-Path $LogRoot)) {
+        New-Item -ItemType Directory -Path $LogRoot | Out-Null
     }
 
+    # First, check for PSWindowsUpdate Module, and if not installed,
+    # install to host PC.
+    if (-not (Get-Module -ListAvailable -Name PSWindowsUpdate)) {
+        Install-Module PSWindowsUpdate -Force -Confirm:$false
+    }
+    Import-Module PSWindowsUpdate
+
+
+}
+
+# New function Update-Func.
+# Runs both PSWindowsUpdate and WinGet updates, and catches any errors.
+function Update-Func {
+    # Begin update process; catch any errors that may appear
     try {
-        $WinGetUpdate | Out-String | Write-Log
-        Write-Log "WinGet updates completed successfully."
+        Write-Log "Starting updates. Please wait while updates complete..."
+        Get-WindowsUpdate -Install -AcceptAll -IgnoreReboot | Out-String | Write-Log
+        Format-Output
+        winget upgrade --all --include-unknown --silent | Out-String | Write-Log
         Format-Output
         Show-Menu
     } catch {
-        Write-Log "Error during WinGet update: $_"
+        Write-Log "Error occured during update phase: $_"
         Format-Output
-        exit 0
+        Show-Menu
     }
 }
 
 # New Show-Menu Function
 # Provides script with a menu for user friendliness
 function Show-Menu {
-    param([string]$Title = "Menu")
+    param([string]$Title)
     Write-Host ""
     Write-Host "================ $Title ================"
     Write-Host "1. Run Script"
-    Write-Host "2. View Log File"
-    Write-Host "3. View Script"
+    Write-Host "2. Print Log File"
+    Write-Host "3. Print Script"
     Write-Host "4. Restart Host"
     Write-Host "5. Shutdown Host"
     Write-Host "Q. Quit"
-    Write-Host "=================================================="
+    Write-Host "==============================================="
     Write-Host ""
 }
 
 do {
-    Show-Menu -Title "UpdateScript.ps1"
+    Show-Menu -Title "Update Script"
     $choice = Read-Host "Enter your choice"
 
     switch ($choice) {
         "1" {
             Write-Host "Running script, please wait..."
-            # Commenting out for testing.
-            Get-Dependency
-            Update-Function
+            Update-Func
             break
         }
         "2" {
@@ -139,7 +116,7 @@ do {
         }
         "3" {
             Write-Host "Printing script file, please wait..."
-            Get-Content -Path "\path\to\script\UpdateScript.ps1"
+            Get-Content -Path $PSCommandPath
             break
         }
         "4" {
@@ -152,10 +129,10 @@ do {
             shutdown /f /t 00
             break
         }
-        "Q" {
-            Write-Host "Quitting script, please wait..."
-            exit 0
-        }
+		"Q" {
+			Write-Host "Quitting script, please wait..."
+			exit 0
+		}
         default {
             Write-Host "Invalid choice. Please try again."
         }
