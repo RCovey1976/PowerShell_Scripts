@@ -15,3 +15,9 @@ Please feel free to leave any questions, comments, requests or suggestions!
   🚧  Add feature where script will detect if Windows host has available update options (PSWindowsUpdate, WinGet, Chocolatey, etc.) and run updates as needed.<br>
   🚧  Add proper error handling<br>
   <td><i>Side-note: Possible feature to output suggested fix for common issues.</i></td>
+
+  <u><b>UbuntuUpdate.ps1</b></u>
+  🚧 Refine code for more efficient use
+  🚧 Add function to check for PowerShell install, and if not present, install.
+  🚧 Create no-touch version that will add itself to cron job schedule.
+  🚧 Refine log output for better readability
