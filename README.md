@@ -8,6 +8,7 @@ Please feel free to leave any questions, comments, requests or suggestions!
 <b><u>[WIP]</u></b>:<br>
 
   <u><b>UpdateScript.ps1</b></u><br>
+  🚧  Add 'cleanup'function, to remove cached files, unused files, etc.
   🚧  Refine functions to reduce redundancy (where possible)<br>
   🚧  Add option to automatically sort log files in log directory<br>
   ✅  Add CLI menu for easy use<br>
@@ -16,9 +17,9 @@ Please feel free to leave any questions, comments, requests or suggestions!
   🚧  Add proper error handling<br>
 
   <u><b>UbuntuUpdate.ps1</b></u><br>
-  🚧 Refine code for more efficient use<br>
-  🚧 Add function to check for PowerShell install, and if not present, install.<br>
-  🚧 Create no-touch version that will add itself to cron job schedule.<br>
-  🚧 Refine log output for better readability<br>
+  🚧  Refine code for more efficient use<br>
+  🚧  Add function to check for PowerShell install, and if not present, install.<br>
+  🚧  Create no-touch version that will add itself to cron job schedule.<br>
+  🚧  Refine log output for better readability<br>
 
 <td><i>Side-note: Possible feature to output suggested fix for common issues.</i></td>
